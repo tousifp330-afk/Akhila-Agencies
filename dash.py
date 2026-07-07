@@ -11,18 +11,18 @@ EXCEL_PATH = "https://docs.google.com/spreadsheets/d/1mbxgLLMNQhp087UDFHu6N_zO5O
 
 strl.title("📦 Inventory Control & Analytics Dashboard")
 strl.markdown("---")
+strl.title("📦 Inventory Control & Analytics Dashboard")
+strl.markdown("---")
 
-if not os.path.exists(EXCEL_PATH):
-    strl.error(f"❌ Cannot locate the master stock file at: `{EXCEL_PATH}`.")
-else:# 2. LOAD DATA DIRECTLY FROM GOOGLE SHEETS URL
+# 2. LOAD DATA DIRECTLY FROM GOOGLE SHEETS URL
 try:
     df = pd.read_excel(EXCEL_PATH, skiprows=2)
 except Exception as e:
     strl.error(f"❌ Error downloading data from Google Sheets: {e}")
-    
-    if 'PRODUCT' in df.columns and 'UNITS' in df.columns:
-        # Clean up numbers safely to prevent Arrow/Serialization crashes
-        df['UNITS'] = pd.to_numeric(df['UNITS'], errors='coerce').fillna(0).astype(int)
+    strl.stop()
+
+# 3. CLEAN AND FORMAT DATA
+# (Your original code for processing 'df' continues directly below here...)
         
         # FIX: Force any other object/mix columns like RATE or VALUE to text format so they never crash the UI
         for col in df.columns:
