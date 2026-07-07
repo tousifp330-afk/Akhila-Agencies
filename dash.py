@@ -14,10 +14,11 @@ strl.markdown("---")
 
 if not os.path.exists(EXCEL_PATH):
     strl.error(f"❌ Cannot locate the master stock file at: `{EXCEL_PATH}`.")
-else:
-    # 2. LOAD AND CLEAN EXCEL DATA
+else:# 2. LOAD DATA DIRECTLY FROM GOOGLE SHEETS URL
+try:
     df = pd.read_excel(EXCEL_PATH, skiprows=2)
-    df.columns = df.columns.str.strip()
+except Exception as e:
+    strl.error(f"❌ Error downloading data from Google Sheets: {e}")
     
     if 'PRODUCT' in df.columns and 'UNITS' in df.columns:
         # Clean up numbers safely to prevent Arrow/Serialization crashes
