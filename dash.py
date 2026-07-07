@@ -3,8 +3,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit as strl
 
-# 1. LIVE FILE CONFIGURATION (GOOGLE SHEETS)
-EXCEL_PATH = "https://docs.google.com/spreadsheets/d/1mbxgLLMNQhp087UDFHu6N_zO5O4f9DkX_Oszm_N7vFs/export?format=xlsx"
+# 1. LIVE FILE CONFIGURATION (YOUR UPDATED GOOGLE SHEETS LINK)
+EXCEL_PATH = "https://docs.google.com/spreadsheets/d/1mbxgLLMNQhp087UDFHu0jQitrtfS_QGDfcCmDAd0HHw/export?format=xlsx"
 
 # Set up clean browser tab configurations
 strl.set_page_config(page_title="Inventory Analytics Dashboard", layout="wide")
