@@ -7,9 +7,7 @@ import streamlit as strl
 strl.set_page_config(page_title="Inventory Analytics Dashboard", layout="wide")
 
 # 1. LIVE FILE PATH CONFIGURATION
-PATH_PROG = r"C:\Users\ADMIN\Downloads\list of stock (1).xlsx"
-PATH_SHOP = r"C:\Users\ADMIN\Downloads\list of stock (1) (1).xlsx"
-EXCEL_PATH = PATH_PROG if os.path.exists(PATH_PROG) else PATH_SHOP
+EXCEL_PATH = "https://docs.google.com/spreadsheets/d/1mbxgLLMNQhp087UDFHu6N_zO5O4f9DkX_Oszm_N7vFs/export?format=xlsx"
 
 strl.title("📦 Inventory Control & Analytics Dashboard")
 strl.markdown("---")
