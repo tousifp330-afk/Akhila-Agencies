@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as strl
 
-# 1. LIVE FILE CONFIGURATION (YOUR UPDATED GOOGLE SHEETS LINK)
+# 1. LIVE FILE CONFIGURATION (YOUR VERIFIED GOOGLE SHEETS LINK)
 EXCEL_PATH = "https://docs.google.com/spreadsheets/d/1mbxgLLMNQhp087UDFHu0jQitrtfS_QGDfcCmDAd0HHw/export?format=xlsx"
 
 # Set up clean browser tab configurations
@@ -14,19 +14,29 @@ strl.markdown("---")
 
 # 2. LOAD DATA DIRECTLY FROM GOOGLE SHEETS URL
 try:
-    df = pd.read_excel(EXCEL_PATH, skiprows=2)
+    # Read from the very top of the sheet without skipping rows
+    df = pd.read_excel(EXCEL_PATH)
 except Exception as e:
     strl.error(f"❌ Error downloading data from Google Sheets: {e}")
     strl.stop()
 
-# 3. CLEAN AND FORMAT DATA
+# 3. AUTOMATICALLY CLEAN HEADERS AND DATA ROWS
+# Clear out entirely empty spacer rows or columns
+df.dropna(how='all', inplace=True)
+
+# Trim spaces from current column names
+df.columns = [str(c).strip() for c in df.columns]
+
+# Backup check: If the real headers are stuck in the first row of data, pull them up
+if 'Product' not in df.columns and len(df) > 0:
+    df.columns = [str(x).strip() for x in df.iloc[0]]
+    df = df[1:]
+
+# Standardize data strings across all columns to clear formatting bugs
 for col in df.columns:
     df[col] = df[col].astype(str).str.strip()
 
-# Strip whitespace from column headers to prevent key matching issues
-df.columns = [str(c).strip() for c in df.columns]
-
-# Ensure crucial visual metrics are formatted cleanly as numbers
+# Safely force vital numerical columns to behave as real math numbers
 numeric_cols = ['Closing Stock', 'Value', 'Rate']
 for c in numeric_cols:
     if c in df.columns:
@@ -41,7 +51,7 @@ product_filter = strl.sidebar.multiselect(
     default=[]
 )
 
-# Apply filter cascading rules dynamically
+# Apply dynamic filtering
 filtered_df = df.copy()
 if product_filter:
     filtered_df = filtered_df[filtered_df['Product'].isin(product_filter)]
